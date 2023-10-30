@@ -1,0 +1,9 @@
+FILENAME MEAN STD N_SAMPLES ASYMPTOTIC_VARIANCE HISTOGRAM_PATH
+norton_forcing_SINUSOIDAL_0.0_10_20_5.out 0.00014175175818536434 0.049320528365088184 10000000 0.4395442249773171 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_10_20_5.out
+norton_forcing_SINUSOIDAL_0.0_12_24_6.out -0.0001365907001087451 0.0313351587949341 10000000 0.17509682835015936 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_12_24_6.out
+norton_forcing_SINUSOIDAL_0.0_14_28_7.out -1.9226203693735238e-5 0.021337387913420724 10000000 0.08272772114356514 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_14_28_7.out
+norton_forcing_SINUSOIDAL_0.0_16_32_8.out 2.2442026876417514e-5 0.015211513482256718 10000000 0.06558304402118882 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_16_32_8.out
+norton_forcing_SINUSOIDAL_0.0_18_36_9.out -8.851582419474242e-6 0.01139864058586865 10000000 0.023669947088683477 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_18_36_9.out
+norton_forcing_SINUSOIDAL_0.0_20_40_10.out 3.9385028760391966e-5 0.00871212954958251 17600000 0.014951000995818661 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_20_40_10.out
+norton_forcing_SINUSOIDAL_0.0_6_12_3.out 0.0004573129002518521 0.1777344476695037 10000000 6.413317205845148 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_6_12_3.out
+norton_forcing_SINUSOIDAL_0.0_8_16_4.out -0.0004818026770764816 0.08597403743113209 10000000 1.4062472878609535 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_SINUSOIDAL_0.0_8_16_4.out

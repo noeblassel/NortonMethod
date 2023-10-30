@@ -1,0 +1,14 @@
+FILENAME MEAN STD N_SAMPLES ASYMPTOTIC_VARIANCE HISTOGRAM_PATH
+norton_forcing_colordrift_100_1.0_2.5_0.7.out 9.871766557909691 33.71980629483414 679990000 68324.15744317768 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_100_1.0_2.5_0.7.out
+norton_forcing_colordrift_110_1.0_2.5_0.7.out 9.819186740041305 33.696250724912375 621450000 67739.87966179679 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_110_1.0_2.5_0.7.out
+norton_forcing_colordrift_120_1.0_2.5_0.7.out 9.77098300081248 33.67073946628458 579070000 67482.93031243324 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_120_1.0_2.5_0.7.out
+norton_forcing_colordrift_130_1.0_2.5_0.7.out 9.744563986527153 33.65192538920373 470740000 66901.46936132497 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_130_1.0_2.5_0.7.out
+norton_forcing_colordrift_140_1.0_2.5_0.7.out 9.718290694123501 33.61588120294048 523580000 67204.22230412012 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_140_1.0_2.5_0.7.out
+norton_forcing_colordrift_150_1.0_2.5_0.7.out 9.695488986674775 33.60108557268627 404940000 66118.40624453475 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_150_1.0_2.5_0.7.out
+norton_forcing_colordrift_160_1.0_2.5_0.7.out 9.644227201073013 33.58877786523517 437540000 68569.70218826081 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_160_1.0_2.5_0.7.out
+norton_forcing_colordrift_170_1.0_2.5_0.7.out 9.64251350707383 33.56370686034886 341060000 66611.318929246 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_170_1.0_2.5_0.7.out
+norton_forcing_colordrift_180_1.0_2.5_0.7.out 9.6173058778323 33.53619135124079 390250000 65159.64004626443 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_180_1.0_2.5_0.7.out
+norton_forcing_colordrift_190_1.0_2.5_0.7.out 9.592892172828341 33.55336015225308 304580000 65214.78909173411 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_190_1.0_2.5_0.7.out
+norton_forcing_colordrift_200_1.0_2.5_0.7.out 9.54305107860227 33.537163096673254 378510000 65041.98942297229 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_200_1.0_2.5_0.7.out
+norton_forcing_colordrift_80_1.0_2.5_0.7.out 9.986017901089472 33.854983531362414 968270000 70501.73470467972 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_80_1.0_2.5_0.7.out
+norton_forcing_colordrift_90_1.0_2.5_0.7.out 9.943610007839274 33.755745491922646 998450000 69402.07970092047 /libre/blasseln/ArticleNorton/thermo_results/histograms/histogram_norton_forcing_colordrift_90_1.0_2.5_0.7.out
