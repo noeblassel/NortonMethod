@@ -3,7 +3,7 @@
 
 using Plots
 
-nemd_file,norton_file=ARGS
+nemd_file,norton_file= (ARGS !== nothing) ? ARGS : ["nemd_neq.out","norton_neq.out"]
 
 _,dat_norton...=map(split,readlines(norton_file))
 
@@ -132,6 +132,9 @@ scatter(Ns_norton,F1*inv.(us_norton).-γ,xlabel="N",ylabel="F₁/U₁-γₓ",lab
 scatter!(Ns_nemd,F1*inv.(us_nemd).-γ,label="NEMD (slope = $(round(d,digits=3)))",markershape=:cross,color=:red)
 plot!(t->exp(a)*t^b,label="",color=:green,linestyle=:dash)
 plot!(t->exp(c)*t^d,label="",color=:red,linestyle=:dot)
+
+println("Norton U1/F1-γ ≈ $(exp(a)) * N ^ $(b)")
+println("NEMD U1/F1-γ ≈ $(exp(c)) * N ^ $(d)")
 
 savefig("neq_thermo_limit_log.pdf")
 
