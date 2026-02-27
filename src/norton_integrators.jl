@@ -38,12 +38,12 @@ function Molly.simulate!(sys::System, sim::NortonSVIntegrator, n_steps; n_thread
     λ = (sim.η-dot(G_y,v_x))/FdotG
     v_x .+= λ * F_y
     
-    run_loggers!(sys, neighbors, 0; n_threads=n_threads)
+    apply_loggers!(sys, neighbors, 0; n_threads=n_threads)
     for step_n = 1:n_steps
         #B step
         sys.velocities .+= accels * sim.dt / 2
         λ_13 = (sim.η-dot(G_y,v_x))/FdotG#analytic expression for Lagrange multiplier
-        v_x .+= λ_13 * F_y 
+        v_x .+= λ_13 * F_y
 
         #A step
         sys.coords .+= sys.velocities * sim.dt
@@ -63,21 +63,21 @@ function Molly.simulate!(sys::System, sim::NortonSVIntegrator, n_steps; n_thread
         #B step
         sys.velocities .+= accels * sim.dt / 2
         λ_23 = (sim.η-dot(G_y,v_x))/FdotG
-        v_x .+= λ_23 * F_y 
-        
+        v_x .+= λ_23 * F_y
+
         #O_step
-        velocities .= α*sys.velocities + σ * random_velocities(sys, sim.T; rng=rng)  #equilibrium fd solution
+        sys.velocities .= α*sys.velocities + σ * random_velocities(sys, sim.T; rng=rng)  #equilibrium fd solution
         λ_fd=(sim.η - dot(G_y,v_x))/FdotG #analytic expression for Lagrange multiplier
         v_x .+= λ_fd * F_y
 
         F_ham=(λ_13+λ_23)/sim.dt
         F_ou=sim.γ*sim.η/FdotG
-        F_corr= λ_12/sim.dt 
+        F_corr= λ_12/sim.dt
 
         push!(force_hist, F_ham+F_corr+F_ou)
 
         neighbors = find_neighbors(sys, sys.neighbor_finder,neighbors,step_n; n_threads=n_threads)
-        run_loggers!(sys, neighbors, step_n; n_threads=n_threads)
+        apply_loggers!(sys, neighbors, step_n; n_threads=n_threads)
     end
     return force_hist
 end
@@ -121,7 +121,7 @@ function Molly.simulate!(sys::System, sim::NortonSplitting, n_steps; n_threads::
 
     sys.coords .= wrap_coords.(sys.coords, (sys.boundary,))
     neighbors = find_neighbors(sys, sys.neighbor_finder; n_threads=n_threads)
-    run_loggers!(sys, neighbors, 0; n_threads=n_threads)
+    apply_loggers!(sys, neighbors, 0; n_threads=n_threads)
 
     accels = accelerations(sys, neighbors; n_threads=n_threads)
     
@@ -158,20 +158,20 @@ function Molly.simulate!(sys::System, sim::NortonSplitting, n_steps; n_threads::
                 F_y .= sim.F.(q_y)
                 G_y .= sim.G.(q_y)
                 FdotG = dot(F_y,G_y)
-                λ = (r - dot(G_y, v_x))/ FdotG #reprojection in p onto the constant response manifold
+                λ = (sim.r - dot(G_y, v_x))/ FdotG #reprojection in p onto the constant response manifold
                 v_x .+= λ * F_y
                 λ_A += λ
 
             elseif op=='B'
                 ( force_computation_steps[i] ) &&  ( accels .= accelerations(sys,neighbors, n_threads=n_threads) )
                 sys.velocities .+= accels * effective_dts[i]
-                λ = (r- dot(G_y, v_x)) /FdotG
+                λ = (sim.r- dot(G_y, v_x)) /FdotG
                 v_x .+= λ * F_y
                 λ_B += λ
-                
+
             elseif op=='O'
                 sys.velocities .= α_eff*sys.velocities + σ_eff * random_velocities(sys,sim.T; rng=rng)
-                λ = (r- dot(G_y, v_x)) /FdotG
+                λ = (sim.r- dot(G_y, v_x)) /FdotG
                 v_x .+= λ * F_y
 
                 λ_O += (1-α_eff)*sim.r /FdotG # only record bounded-variation increment, which is analytically known
@@ -182,7 +182,7 @@ function Molly.simulate!(sys::System, sim::NortonSplitting, n_steps; n_threads::
         λ_est= (λ_A + λ_B + λ_O) / sim.dt
         push!(λ_hist, λ_est)
 
-        run_loggers!(sys,neighbors,step_n)
+        apply_loggers!(sys,neighbors,step_n)
 
         if step_n != n_steps
             neighbors = find_neighbors(sys, sys.neighbor_finder, neighbors, step_n ; n_threads=n_threads)
@@ -231,7 +231,7 @@ function Molly.simulate!(sys::System, sim::GeneralizedNortonSplitting, n_steps; 
 
     sys.coords .= wrap_coords.(sys.coords, (sys.boundary,))
     neighbors = find_neighbors(sys, sys.neighbor_finder; n_threads=n_threads)
-    run_loggers!(sys, neighbors, 0; n_threads=n_threads)
+    apply_loggers!(sys, neighbors, 0; n_threads=n_threads)
 
     accels = accelerations(sys, neighbors; n_threads=n_threads)
     dW = zero(sys.velocities)
@@ -326,7 +326,7 @@ function Molly.simulate!(sys::System, sim::GeneralizedNortonSplitting, n_steps; 
         λ_est= (λ_A + λ_B +λ_O) / sim.dt
 
         push!(λ_hist, λ_est)
-        run_loggers!(sys,neighbors,step_n)
+        apply_loggers!(sys,neighbors,step_n)
 
         if step_n != n_steps
             neighbors = find_neighbors(sys, sys.neighbor_finder, neighbors, step_n ; n_threads=n_threads)
@@ -384,7 +384,7 @@ function Molly.simulate!(sys::System, sim::NortonSplittingColorDrift, n_steps; n
 
     sys.coords .= wrap_coords.(sys.coords, (sys.boundary,))
     neighbors = find_neighbors(sys, sys.neighbor_finder; n_threads=n_threads)
-    run_loggers!(sys, neighbors, 0; n_threads=n_threads)
+    apply_loggers!(sys, neighbors, 0; n_threads=n_threads)
 
     accels = accelerations(sys, neighbors; n_threads=n_threads)
     
@@ -411,20 +411,20 @@ function Molly.simulate!(sys::System, sim::NortonSplittingColorDrift, n_steps; n
                 sys.coords .+= sys.velocities * effective_dts[i]
                 sys.coords .= Molly.wrap_coords.(sys.coords, (sys.boundary,))
 
-                λ = (r - dot(F, v_x)) #reprojection in p onto the constant response manifold
+                λ = (sim.r - dot(F, v_x)) #reprojection in p onto the constant response manifold
                 v_x .+= λ * F
                 λ_A += λ
 
             elseif op=='B'
                 ( force_computation_steps[i] ) &&  ( accels .= accelerations(sys,neighbors, n_threads=n_threads) )
                 sys.velocities .+= accels * effective_dts[i]
-                λ = (r- dot(F, v_x))
+                λ = (sim.r- dot(F, v_x))
                 v_x .+= λ * F
                 λ_B += λ
-                
+
             elseif op=='O'
                 sys.velocities .= α_eff*sys.velocities + σ_eff * random_velocities(sys,sim.T; rng=rng)
-                λ = (r- dot(F, v_x))
+                λ = (sim.r- dot(F, v_x))
                 v_x .+= λ * F
 
                 λ_O += (1-α_eff)*sim.r # only record bounded-variation increment, which is analytically known
@@ -435,7 +435,7 @@ function Molly.simulate!(sys::System, sim::NortonSplittingColorDrift, n_steps; n
         λ_est= (λ_A + λ_B + λ_O) / sim.dt
         push!(λ_hist, λ_est)
 
-        run_loggers!(sys,neighbors,step_n)
+        apply_loggers!(sys,neighbors,step_n)
 
         if step_n != n_steps
             neighbors = find_neighbors(sys, sys.neighbor_finder, neighbors, step_n ; n_threads=n_threads)

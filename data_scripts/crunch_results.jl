@@ -14,7 +14,7 @@ function asymptotic_variance(v, min_n_blocks = 10)
     avg=mean(v)
     data .-= avg
 
-    if length(data)%2 ==1
+    if length(data)%2 == 1
         pop!(data)
     end
 
@@ -34,10 +34,9 @@ function asymptotic_variance(v, min_n_blocks = 10)
         K *=2
         data = (data[1:2:end]+data[2:2:end])/2
 
-        if length(data)%2 ==1 # always keep an even number of blocks
+        if length(data)%2 == 1 # always keep an even number of blocks
             pop!(data)
         end
-
     end
     return max_var
 end

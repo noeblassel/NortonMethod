@@ -1,4 +1,4 @@
-using Molly, LinearAlgebra
+using Molly, LinearAlgebra, AtomsCalculators
 
 include("utils.jl")
 println("Usage: T ρ dt γ η t_equilibration n_iter_sim N scheme")
@@ -28,11 +28,11 @@ struct ColorDriftForcing
     η::Float64
 end
 
-function Molly.forces(inter::ColorDriftForcing,s::System,neighbors=nothing)
-    f=zero(s.velocities)
+AtomsCalculators.@generate_interface function AtomsCalculators.forces(sys, inter::ColorDriftForcing; kwargs...)
+    f=zero(sys.velocities)
     f_x=view(reinterpret(reshape,Float64,f),1,:)
     f_x .= color_drift
-    return forcing.η*f
+    return inter.η*f
 end
 
 function colordrift_response(s::System,args...;kwargs...)
@@ -44,11 +44,11 @@ forcing=ColorDriftForcing(η)
 
 atoms=[Atom(index=i,ϵ=1.0,σ=2^(-1/6),mass=1.0) for i=1:N]
 coords=place_atoms(N,box_size;min_dist=0.5)
-velocities=[velocity(1.0,T,1.0) for i=1:N]
+velocities=[random_velocity(1.0,T,1.0) for i=1:N]
 
-inter=LennardJones(force_units=NoUnits,energy_units=NoUnits,cutoff=ShiftedForceCutoff(r_c),nl_only=true)
+inter=LennardJones(cutoff=ShiftedForceCutoff(r_c),use_neighbors=true)
 steps_nf = 5
-nf = (6r_c > L) ? DistanceNeighborFinder(nb_matrix=trues(N,N),n_steps=steps_nf,dist_cutoff=r_c) : CellListMapNeighborFinder(nb_matrix=trues(N,N),n_steps=steps_nf,dist_cutoff=r_c,unit_cell=box_size)
+nf = (6r_c > L) ? DistanceNeighborFinder(eligible=trues(N,N),n_steps=steps_nf,dist_cutoff=r_c) : CellListMapNeighborFinder(eligible=trues(N,N),n_steps=steps_nf,dist_cutoff=r_c,unit_cell=box_size)
 
 n_steps_eq=Int64(floor(t_eq/dt))
 

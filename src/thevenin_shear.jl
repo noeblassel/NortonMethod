@@ -1,4 +1,4 @@
-using Molly, LinearAlgebra
+using Molly, LinearAlgebra, AtomsCalculators
 
 include("utils.jl")
 println("Usage: T ρ dt γ η forcing_type=SINUSOIDAL|LINEAR|CONSTANT t_equilibration n_iter_sim Nx scheme cutoff_radius y_ratio z_ratio")
@@ -37,12 +37,12 @@ struct NEMD_longitudinal_forcing{F}
     η::Float64
 end
 
-function Molly.forces(inter::NEMD_longitudinal_forcing{F},s::System,neighbors=nothing) where {F}
-    f=zero(s.velocities)
+AtomsCalculators.@generate_interface function AtomsCalculators.forces(sys, inter::NEMD_longitudinal_forcing{F}; kwargs...) where {F}
+    f=zero(sys.velocities)
     f_x=view(reinterpret(reshape,Float64,f),1,:)
-    q_y=view(reinterpret(reshape,Float64,s.coords),2,:)
+    q_y=view(reinterpret(reshape,Float64,sys.coords),2,:)
     f_x .= inter.forcing.(q_y)
-    return forcing.η*f
+    return inter.η*f
 end
 
 function fourier_response(s::System,args...;kwargs...)
@@ -65,12 +65,12 @@ elseif forcing_type=="CONSTANT"
     forcing=NEMD_longitudinal_forcing(constant_forcing,η)
 end
 
-nf = (3.6r_c < min(Lx,Ly,Lz)) ? CellListMapNeighborFinder(nb_matrix=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff= 1.2r_c,unit_cell=box_size) : DistanceNeighborFinder(nb_matrix=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff=1.2r_c)
+nf = (3.6r_c < min(Lx,Ly,Lz)) ? CellListMapNeighborFinder(eligible=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff= 1.2r_c,unit_cell=box_size) : DistanceNeighborFinder(eligible=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff=1.2r_c)
 
 atoms=[Atom(index=i,ϵ=1.0,σ=1.0,mass=1.0) for i=1:N]
 coords=place_atoms_on_3D_lattice(Nx,Ny,Nz,box_size)
-velocities=[velocity(1.0,T,1.0) for i=1:N]
-inter=LennardJones(cutoff=ShiftedForceCutoff(r_c),nl_only=true,force_units=NoUnits,energy_units=NoUnits)
+velocities=[random_velocity(1.0,T,1.0) for i=1:N]
+inter=LennardJones(cutoff=ShiftedForceCutoff(r_c),use_neighbors=true)
 
 n_steps_eq=Int64(floor(t_eq/dt))
 

@@ -57,12 +57,12 @@ end
 
 simulator=NortonSplitting(dt,r,T,γ,splitting,F,G)
 
-nf = (3.6r_c < min(Lx,Ly,Lz)) ? CellListMapNeighborFinder(nb_matrix=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff= 1.2r_c,unit_cell=box_size) : DistanceNeighborFinder(nb_matrix=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff=1.2r_c)
+nf = (3.6r_c < min(Lx,Ly,Lz)) ? CellListMapNeighborFinder(eligible=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff= 1.2r_c,unit_cell=box_size) : DistanceNeighborFinder(eligible=trues(N,N),n_steps=n_steps_neighbors,dist_cutoff=1.2r_c)
 coords=place_atoms_on_3D_lattice(Nx,Ny,Nz,box_size)
 atoms = [Atom(σ=1.0, ϵ=1.0, mass=1.0) for i in 1:N]
-velocities = [velocity(1.0, T, 1.0) for i = 1:N]
+velocities = [random_velocity(1.0, T, 1.0) for i = 1:N]
 
-inter=LennardJones(cutoff=ShiftedForceCutoff(r_c),nl_only=true,force_units=NoUnits,energy_units=NoUnits)
+inter=LennardJones(cutoff=ShiftedForceCutoff(r_c),use_neighbors=true)
 
 n_steps_eq=floor(Int64,t_eq/dt)
 
