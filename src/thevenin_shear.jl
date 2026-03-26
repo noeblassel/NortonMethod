@@ -37,7 +37,7 @@ struct NEMD_longitudinal_forcing{F}
     η::Float64
 end
 
-AtomsCalculators.@generate_interface function AtomsCalculators.forces(sys, inter::NEMD_longitudinal_forcing{F}; kwargs...) where {F}
+AtomsCalculators.@generate_interface function AtomsCalculators.forces(sys, inter::NEMD_longitudinal_forcing; kwargs...)
     f=zero(sys.velocities)
     f_x=view(reinterpret(reshape,Float64,f),1,:)
     q_y=view(reinterpret(reshape,Float64,sys.coords),2,:)
