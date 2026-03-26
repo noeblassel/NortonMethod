@@ -23,6 +23,9 @@ data/                       Processed simulation output
   autocorrelations/           Autocorrelation functions
   histograms/                 Histogram data (Norton forcing / Thevenin response)
   summary_statistics/         Aggregated results (means, variances, transport coefficients)
+
+examples/
+  liquid_argon_example.jl     A simple run demonstrating NEMD/Norton duality in liquid argon using shear viscosity simulations
 ```
 
 ### Dependencies
